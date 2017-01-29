@@ -19,12 +19,13 @@ Requires around 10 Gb of free RAM.
 
 ### Installation of dependencies
 1. Install TensorFlow
-2. Install other dependencies via `pip`.
-    ```sh
+2. Install other dependencies via `pip`.    
+```
     pip install chainer
     pip install numpy
     pip install opencv
-    ```
+    pip install tqdm
+```
 3. In [scripts/config.py](scripts/config.py) set `ROOT_DIR` to the point to the root dir of the project.
 4. Download weights of alexnet pretrained on Imagenet [bvlc_alexnet.tf](https://hcicloud.iwr.uni-heidelberg.de/index.php/s/QBSJhaymOLGxz6M) and move them into [`weights/`](weights/) dir.
 
