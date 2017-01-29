@@ -5,6 +5,8 @@
 This is implementation of DeepPose (stg-1).  
 Code includes training and testing on 2 popular Pose Benchmarks: [LSP Extended Dataset](http://www.comp.leeds.ac.uk/mat4saj/lspet.html) and [MPII Human Pose Dataset](http://human-pose.mpi-inf.mpg.de/).
 
+Performance on LSP is close to the performance in original paper.
+
 ### Requirements
 
 - Python 2.7
@@ -19,15 +21,10 @@ Requires around 10 Gb of free RAM.
 
 ### Installation of dependencies
 1. Install TensorFlow
-2. Install other dependencies via `pip`.    
-```
-    pip install chainer
-    pip install numpy
-    pip install opencv
-    pip install tqdm
-```
-3. In [scripts/config.py](scripts/config.py) set `ROOT_DIR` to the point to the root dir of the project.
-4. Download weights of alexnet pretrained on Imagenet [bvlc_alexnet.tf](https://hcicloud.iwr.uni-heidelberg.de/index.php/s/QBSJhaymOLGxz6M) and move them into [`weights/`](weights/) dir.
+2. Install other dependencies via `pip`.  
+```pip install chainer numpy opencv tqdm```
+3. In [`scripts/config.py`](scripts/config.py) set `ROOT_DIR` to point to the root dir of the project.
+4. Download weights of alexnet pretrained on Imagenet [bvlc_alexnet.tf](https://hcicloud.iwr.uni-heidelberg.de/index.php/s/QBSJhaymOLGxz6M) and put them into [`weights/`](weights/) dir.
 
 ### Dataset preparation
 
