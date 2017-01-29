@@ -5,7 +5,7 @@
 This is implementation of DeepPose (stg-1).  
 Code includes training and testing on 2 popular Pose Benchmarks: [LSP Extended Dataset](http://www.comp.leeds.ac.uk/mat4saj/lspet.html) and [MPII Human Pose Dataset](http://human-pose.mpi-inf.mpg.de/).
 
-Performance on LSP is close to the performance in original paper.
+Performance of Alexnet pretrained on Imagenet and finetuned on LSP is close to the performance reported in the original paper.
 
 ### Requirements
 
