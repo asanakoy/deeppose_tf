@@ -1,0 +1,4 @@
+chainer==1.17.0
+numpy==1.12.0
+tensorflow==0.11.0rc0
+tqdm==4.8.4
