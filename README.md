@@ -10,7 +10,9 @@ Performance of Alexnet pretrained on Imagenet and finetuned on LSP is close to t
 ### Requirements
 
 - Python 2.7
-  - [TensorFlow 0.11.0rc0](https://github.com/tensorflow/tensorflow/releases/tag/v0.11.0rc0) (was not tested on later versions)
+  - TensorFlow (tested versions):
+    - 0.11.0rc0
+    - 0.12.0rc0
   - [Chainer 1.17.0+](https://github.com/pfnet/chainer) (for background data processing only)
   - numpy 1.12+
   - OpenCV 2.4.8+
