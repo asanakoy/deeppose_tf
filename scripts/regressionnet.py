@@ -248,6 +248,7 @@ def print_pckh(dataset_name, global_step, score_per_joint, tag_prefix):
         poseevaluation.pcp.average_pckh_symmetric_joints(dataset_name, score_per_joint)
     print 'Step\t {}\t {}/mSymmetricPCKh\t {:.3f}'.format(global_step, tag_prefix,
                                              np.mean(pckh_symmetric_joints))
+    print 'Step {} {}/parts_SymmetricPCKh:'.format(global_step, tag_prefix)
     print '\t'.join(joint_names)
     print '\t'.join(['{:.3f}'.format(val) for val in pckh_symmetric_joints])
 
