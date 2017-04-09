@@ -1,15 +1,16 @@
 #!/bin/bash
+PROJ_ROOT=~/workspace/deeppose_tf_official
 CUDA_VISIBLE_DEVICES=0 \
-PYTHONPATH=$PYTHONPATH:~/tmp/deeppose_tf \
-python ../scripts/train.py \
+PYTHONPATH=${PROJ_ROOT}:$PYTHONPATH \
+python ${PROJ_ROOT}/scripts/train.py \
 --max_iter 1000000 \
 --batch_size 128 \
 --snapshot_step 10000 \
 --test_step 250 \
 --log_step 1 \
---train_csv_fn ~/tmp/deeppose_tf/datasets/lsp_ext/train_joints.csv \
---test_csv_fn ~/tmp/deeppose_tf/datasets/lsp_ext/test_joints.csv \
---val_csv_fn ~/tmp/deeppose_tf/datasets/lsp_ext/train_lsp_small_joints.csv \
+--train_csv_fn ${PROJ_ROOT}/datasets/lsp_ext/train_joints.csv \
+--test_csv_fn ${PROJ_ROOT}/datasets/lsp_ext/test_joints.csv \
+--val_csv_fn ${PROJ_ROOT}/datasets/lsp_ext/train_lsp_small_joints.csv \
 --img_path_prefix="" \
 --n_joints 14 \
 --seed 1701 \
@@ -26,10 +27,10 @@ python ../scripts/train.py \
 --fc_lr 0.0005 \
 --fix_conv_iter 0 \
 --optimizer adagrad \
---o_dir ~/tmp/deeppose_tf/out/lsp_alexnet_scratch \
+--o_dir ${PROJ_ROOT}/out/lsp_alexnet_scratch \
 --gcn \
 --fliplr \
 --workers 6 \
 --net_type Alexnet \
 # --resume \
-# -s~/tmp/deeppose_tf/out/lsp_alexnet_scratch/checkpoint-30000
+# -s=${PROJ_ROOT}/out/lsp_alexnet_scratch/checkpoint-30000
