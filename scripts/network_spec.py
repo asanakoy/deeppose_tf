@@ -46,7 +46,7 @@ def training_convnet(net, loss_op, fc_lr, conv_lr, optimizer_type='adagrad',
                     grad_norm_op = tf.nn.l2_loss(grad, name=format(v.name[:-2]))
                     tf.add_to_collection('grads', grad_norm_op)
                     if trace_gradients:
-                        tf.scalar_summary(grad_norm_op.name, grad_norm_op)
+                        tf.summary.scalar(grad_norm_op.name, grad_norm_op)
 
         update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
         with tf.control_dependencies(update_ops):

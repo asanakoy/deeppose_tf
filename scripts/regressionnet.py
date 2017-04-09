@@ -50,14 +50,13 @@ def create_regression_net(n_joints=14, optimizer_type=None,
         joints_is_valid_flat = tf.cast(tf.reshape(joints_is_valid, shape=[-1, n_joints * 2]),
                                        tf.float32)
 
-        diff = tf.sub(joints_gt_flat, net.fc_regression)
-        diff_valid = tf.mul(diff, joints_is_valid_flat)
+        diff = tf.subtract(joints_gt_flat, net.fc_regression)
+        diff_valid = tf.multiply(diff, joints_is_valid_flat)
 
         num_valid_joints = tf.reduce_sum(joints_is_valid_flat,
-                                         reduction_indices=1) / tf.constant(2.0,
-                                                                            dtype=tf.float32)
+                                         axis=1) / tf.constant(2.0, dtype=tf.float32)
         pose_loss_op = tf.reduce_mean(
-            tf.reduce_sum(tf.pow(diff_valid, 2), reduction_indices=1) / num_valid_joints,
+            tf.reduce_sum(tf.pow(diff_valid, 2), axis=1) / num_valid_joints,
             name='joint_euclidean_loss')
 
         l2_loss = tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables()])
@@ -74,11 +73,12 @@ def create_regression_net(n_joints=14, optimizer_type=None,
         #     tf.add_to_collection('norms', conv5b_norm)
         #     tf.scalar_summary([conv5w_norm.name, conv5b_norm.name], [conv5w_norm, conv5b_norm])
 
-        tf.scalar_summary(
-            ['loss_with_decay', 'loss', 'conv_lr', 'fc_lr'],
-            [loss_with_decay_op, pose_loss_op, conv_lr_pl, fc_lr_pl])
+        tf.summary.scalar('loss_with_decay', loss_with_decay_op)
+        tf.summary.scalar('loss', pose_loss_op)
+        tf.summary.scalar('conv_lr', conv_lr_pl)
+        tf.summary.scalar('fc_lr', fc_lr_pl)
 
-        net.sess.run(tf.initialize_all_variables())
+        net.sess.run(tf.global_variables_initializer())
         if init_snapshot_path is not None:
             if not is_resume:
                 if net_type == 'Alexnet':
@@ -96,7 +96,7 @@ def create_regression_net(n_joints=14, optimizer_type=None,
                                                        optimizer_type=optimizer_type,
                                                        trace_gradients=True)
         start = time.time()
-        uninit_vars = [v for v in tf.all_variables()
+        uninit_vars = [v for v in tf.global_variables()
                        if not tf.is_variable_initialized(v).eval(session=net.sess)]
         print 'uninit vars:', [v.name for v in uninit_vars]
         print 'Elapsed time for finding uninitialized variables: {:.2f}s'.format(time.time() - start)
@@ -105,7 +105,7 @@ def create_regression_net(n_joints=14, optimizer_type=None,
             uninit_vars.append(net.global_iter_counter)
         setup_moving_averages(net.graph, reset=reset_moving_averages, track=False)
 
-        net.sess.run(tf.initialize_variables(uninit_vars))
+        net.sess.run(tf.variables_initializer(uninit_vars))
         print 'Elapsed time to init them: {:.2f}s'.format(time.time() - start)
 
         return net, loss_with_decay_op, pose_loss_op, train_op
@@ -113,14 +113,14 @@ def create_regression_net(n_joints=14, optimizer_type=None,
 
 def setup_moving_averages(graph, reset=False, track=False):
     with graph.as_default():
-        movin_avg_vars = [v for v in tf.get_collection(tf.GraphKeys.VARIABLES) if
+        movin_avg_vars = [v for v in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES) if
                           'moving_' in v.name]
         if track:
-            tf.scalar_summary(['moving/' + v.name for v in movin_avg_vars],
+            tf.summary.scalar(['moving/' + v.name for v in movin_avg_vars],
                               [tf.nn.l2_loss(v) for v in movin_avg_vars])
         if reset:
             print 'Resetting moving averages'
-            tf.initialize_variables(movin_avg_vars)
+            tf.variables_initializer(movin_avg_vars)
 
 
 def batch2feeds(batch):

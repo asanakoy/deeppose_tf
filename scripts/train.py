@@ -58,8 +58,8 @@ def train_loop(net, saver, loss_op, pose_loss_op, train_op, dataset_name, train_
     summary_step = 50
 
     with net.graph.as_default():
-        summary_writer = tf.train.SummaryWriter(output_dir, net.sess.graph)
-        summary_op = tf.merge_all_summaries()
+        summary_writer = tf.summary.FileWriter(output_dir, net.sess.graph)
+        summary_op = tf.summary.merge_all()
         fc_train_op = net.graph.get_operation_by_name('fc_train_op')
     global_step = None
 
