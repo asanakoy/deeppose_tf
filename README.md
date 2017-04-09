@@ -10,13 +10,13 @@ Performance of Alexnet pretrained on Imagenet and finetuned on LSP is close to t
 ### Requirements
 
 - Python 2.7
-  - TensorFlow (tested versions):
-    - 0.11.0rc0
-    - 0.12.0rc0
+  - TensorFlow r1.0
   - [Chainer 1.17.0+](https://github.com/pfnet/chainer) (for background data processing only)
   - numpy 1.12+
   - OpenCV 2.4.8+
   - tqdm 4.8.4+
+  
+For tensorflow version 0.11.0rc0 and 0.12.0rc0 checkout branch [r0.12](https://github.com/asanakoy/deeppose_tf/tree/tensorflow_r0.12)
 
 #### RAM requirements
 Requires around 10 Gb of free RAM.
@@ -51,6 +51,8 @@ python datasets/mpii_dataset.py
 - [examples/train_mpii_alexnet_scratch.py](examples/train_mpii_alexnet_scratch.sh) to run training Alexnet on MPII from scratch.
 - [examples/train_mpii_alexnet_imagenet.py](examples/train_mpii_alexnet_imagenet.sh) to run training Alexnet on MPII using weights pretrained on Imagenet.
 
+**Example:** `bash examples/train_lsp_alexnet_scratch.sh`
+
 All these scripts call [`train.py`](scripts/train.py).  
 To check which options it accepts and which default values are set, please look into [`cmd_options.py`](scripts/cmd_options.py).
 
@@ -58,9 +60,35 @@ To check which options it accepts and which default values are set, please look 
 * For training we use cropped pearsons (not the full image).  
 * To use your own network architecure set it accordingly in [`scripts/regressionnet.py`](scripts/regressionnet.py) in `create_regression_net` method.
 
+The network wiil be tested during training and you will see the following output every T iterations:
+```
+8it [00:06,  1.31it/s]                                                                         
+Step 0 test/pose_loss = 0.116
+Step	 0	 test/mPCP	 0.005
+Step 0 test/parts_PCP:
+Head	Torso	U Arm	L Arm	U Leg	L Leg	mean
+0.000	0.015	0.001	0.003	0.013	0.001	0.006
+Step	 0	 test/mPCKh	 0.029
+Step	 0	 test/mSymmetricPCKh	 0.026
+Step 0 test/parts_mSymmetricPCKh:
+Head	Neck	Shoulder	Elbow	Wrist	Hip	  Knee	Ankle
+0.003	0.016	0.019	    0.043	0.044	0.028	0.053	0.003
+```
+Here you can see that PCP and PCKh scores at step (iteration) 0.  
+`test/METRIC_NAME` means that the metric was calculated on test set.  
+`val/METRIC_NAME` means that the metric was calculated on validation set. Just for sanity check on LSP I took the first 1000 images from train as validation.  
+
+`pose_loss` is the regression loss of the joint prediction,  
+`mPCP` is mean PCP@0.5 score over all sticks,  
+`parts_PCP` is PCP@0.5 score for every stick.  
+`mRelaxedPCP` is a relaxed PCP@0.5 score, where the stick has a correct position when the average error for both joints is less than the threshold (0.5).   
+`mPCKh` is mean PCKh score for all joints,  
+`mSymmetricPCKh` is mean PCKh score for all joints, where the score for symmetric left/right joints was averaged,  
+
+
 ### Testing
-To test the model use [`tests/test_snapshot.p`](tests/test_snapshot.py).  
-- The script will produce PCP and PCKh scores applied on cropped pearsons.    
+To test the model use [`tests/test_snapshot.py`](tests/test_snapshot.py).  
+- The script will produce PCP@0.5 and PCKh@0.5 scores applied on cropped pearsons.    
 - Scores wiil be computed for different crops.   
 - BBOX EXTENSION=1 means that the pearson was tightly cropped,    
 BBOX EXTENSION=1.5 means that the bounding box of the person was enlarged in 1.5 times and then image was cropped.
