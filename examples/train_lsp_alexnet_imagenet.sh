@@ -1,5 +1,5 @@
 #!/bin/bash
-PROJ_ROOT=~/workspace/deeppose_tf_official
+PROJ_ROOT=$(pwd)
 CUDA_VISIBLE_DEVICES=0 \
 PYTHONPATH=${PROJ_ROOT}:$PYTHONPATH \
 python ${PROJ_ROOT}/scripts/train.py \
