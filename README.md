@@ -100,6 +100,35 @@ BBOX EXTENSION=1.5 means that the bounding box of the person was enlarged in 1.5
 
 **Example:** `python tests/test_snapshot.py lsp out/lsp_alexnet_scratch/checkpoint-10000`
 
+### Results
+Results for Random initialization and Alexnet initialization from our CVPR 2017 paper [Deep Unsupervised Similarity Learning using Partially Ordered Sets](https://arxiv.org/abs/1704.02268). Check the paper for more results using our initialization and Shuffle&Learn initialization.
+
+#### LSP PCP@0.5
+
+|            | Random Init. | Alexnet |
+|------------|--------------|---------|
+| Torso      | 87.3         | 92.8    |
+| Upper legs | 52.3         | 68.1    |
+| Lower legs | 35.4         | 53.0    |
+| Upper arms | 25.4         | 39.8    |
+| Lower arms | 7.6          | 17.5    |
+| Head       | 44.0         | 62.8    |
+| Total      | 42.0         | 55.7    |
+
+#### MPII PCKh@0.5
+|             | Random Init. | Alexnet |
+|-------------|--------------|---------|
+| Head        | 79.5         | 87.2    |
+| Neck        | 87.1         | 93.2    |
+| LR Shoulder | 71.6         | 85.2    |
+| LR Elbow    | 52.1         | 69.6    |
+| LR Wrist    | 34.6         | 52.0    |
+| LR Hip      | 64.1         | 81.3    |
+| LR Knee     | 58.3         | 69.7    |
+| LR Ankle    | 51.2         | 62.0    |
+| Thorax      | 85.5         | 93.4    |
+| Pelvis      | 70.1         | 86.6    |
+| Total       | 65.4         | 78.0    |
 
 
 License
