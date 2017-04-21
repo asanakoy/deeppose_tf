@@ -130,6 +130,8 @@ Results for Random initialization and Alexnet initialization from our CVPR 2017 
 | Pelvis      | 70.1         | 86.6    |
 | Total       | 65.4         | 78.0    |
 
+### Notes
+If you use this code please cite the repo.  
 
 License
 ----
